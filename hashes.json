@@ -1,0 +1,15 @@
+{
+	"Hashes": {
+		"Build/hasher": "70f8a59b159c97f5f11f5bd23acbbcc458f0380e",
+		"Build/hasher.exe": "5ff028a8f674896755d77b3d146db49e6b66d7e5",
+		"build.sh": "12a5517832da8107d482bd89fcc81b3b4da6a1db",
+		"go.mod": "cc081e4f7e2c1626ceb0b59f09b541f8ae527d68",
+		"go.sum": "8b1263e4bd8306d8793423a7db3350f841f96037",
+		"hashes1.json": "09f2fd2b74f55c4db2e266e4c36b70c632ea4605",
+		"main.go": "2b519da4ea732f1ce64a53d35dbdd6785800c22f"
+	},
+	"Excludes": {
+		"hashes.json": {},
+		"validation.json": {}
+	}
+}
