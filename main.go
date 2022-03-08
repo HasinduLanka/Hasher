@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path"
 	"path/filepath"
 
 	"github.com/HasinduLanka/console"
@@ -256,9 +257,9 @@ func CreateValidation(filename string, dir string, validationFile string) {
 }
 
 func ListFilesRecursive(dir string, ch chan string) {
-	filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+	filepath.Walk(dir, func(fpath string, info os.FileInfo, err error) error {
 		if !info.IsDir() {
-			ch <- path
+			ch <- filepath.ToSlash(path.Clean(fpath))
 		}
 		return nil
 	})
