@@ -189,6 +189,8 @@ func ValidateHashes(h *Hashes, dir string) *Validation {
 	files := make(chan string)
 	go ListFilesRecursive(dir, files)
 
+	hashedFiles := make(map[string]struct{}, len(h.Hashes))
+
 	// Iterate through the files
 	for file := range files {
 
@@ -201,19 +203,34 @@ func ValidateHashes(h *Hashes, dir string) *Validation {
 
 		// Get the hash of the file
 		hash := HashFile(filePath)
+		hashedFiles[filePath] = struct{}{}
+
+		oldHash, oldHashExists := h.Hashes[filePath]
 
 		// Check if the hash matches the stored hash
-		if hash != h.Hashes[filePath] {
+		if oldHashExists && oldHash == hash {
+			validation.Valid[filePath] = hash
+
+			// console.Print("\nHash match for " + filePath + ":")
+			// console.Print("\t" + hash + " : " + h.Hashes[filePath])
+
+		} else {
 			validation.AllValid = false
 			validation.Invalid[filePath] = hash
 
 			console.Print("\nHash mismatch for " + filePath + ":")
 			console.Print("\t" + hash + " : " + h.Hashes[filePath])
-		} else {
-			validation.Valid[filePath] = hash
 
-			// console.Print("\nHash match for " + filePath + ":")
-			// console.Print("\t" + hash + " : " + h.Hashes[filePath])
+		}
+	}
+
+	// Check if all files have been hashed
+	for file := range h.Hashes {
+		if _, ok := hashedFiles[file]; !ok {
+			validation.AllValid = false
+			validation.Invalid[file] = h.Hashes[file]
+
+			console.Print("\nFile not found : " + file)
 		}
 	}
 
